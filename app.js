@@ -145,15 +145,20 @@ async function start() {
     console.log(chalk.gray(`by ${config.ownerName}\n`));
 
     backupLocalCreds();
-    await syncWithRetry('/sinkronsesi', processSessionCreds);
-    const dbSynced = await syncWithRetry('/sinkrondb', processDatabaseFile);
-    await triggerRemoteSessionWipe();
-    
-    if (dbSynced) db.reinit();
-    else logger.warn('[DB] Melanjutkan dengan database lokal karena sinkronisasi gagal.');
-    
+
+    // Remote session/database sync disabled
+    logger.info('[SYNC] Remote sync disabled. Using local session and database.');
+
+    // Use local database
+    try {
+        db.reinit();
+        logger.info('[DB] Local database initialized.');
+    } catch (error) {
+        logger.error('[DB] Failed to initialize local database:', error);
+    }
+
     loadPlugins();
-    
+
     logger.info('Memberi jeda 2 detik untuk stabilisasi sistem file...');
     await new Promise(res => setTimeout(res, 2000));
 
@@ -163,18 +168,22 @@ async function start() {
     } catch (e) {
         if (e.output?.statusCode === DisconnectReason.loggedOut) {
             logger.error('[FAILSAFE] Sesi saat ini tidak valid. Mencoba memulihkan dari cadangan...');
+
             if (restoreLocalCreds()) {
                 try {
                     logger.info('[CONNECT] Mencoba terhubung kembali dengan sesi cadangan...');
                     await connectToWhatsApp();
                 } catch (finalError) {
-                    logger.fatal('[FATAL] Sesi cadangan juga gagal.', finalError); process.exit(1);
+                    logger.fatal('[FATAL] Sesi cadangan juga gagal.', finalError);
+                    process.exit(1);
                 }
             } else {
-                logger.fatal('[FATAL] Tidak ada sesi cadangan untuk dipulihkan.'); process.exit(1);
+                logger.fatal('[FATAL] Tidak ada sesi cadangan untuk dipulihkan.');
+                process.exit(1);
             }
         } else {
-            logger.fatal('[FATAL] Terjadi error tak terduga saat koneksi awal.', e); process.exit(1);
+            logger.fatal('[FATAL] Terjadi error tak terduga saat koneksi awal.', e);
+            process.exit(1);
         }
     }
 }
