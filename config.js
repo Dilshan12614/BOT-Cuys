@@ -1,13 +1,13 @@
 module.exports = {
     "prefix": ".",
-    "ownerNumber": "6283894391287",
+    "ownerNumber": "94740534738",
     "ownerName": "Puruu Puruu",
-    "botNumber": "6283873321433",
+    "botNumber": "94740534738",
     "botName": "NirKyy",
     "packName": "NirKyy",
     "joinPrice": 500000,
     "isPublic": true,
     "autoRead": true,
     "autoTyping": true,
-    "rapidApiKey": "84abff527bmshe5db0ab2e935a2fp18c617jsn3d437cd679e9"
+    "rapidApiKey": "UAEGgR6Q#ZacVeleR87OtRhjcZ54jaJ0FkytAEvbLRAqLgYVrkX0"
 };
