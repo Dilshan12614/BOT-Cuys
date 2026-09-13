@@ -9,5 +9,5 @@ module.exports = {
     "isPublic": true,
     "autoRead": true,
     "autoTyping": true,
-    "rapidApiKey": "UAEGgR6Q#ZacVeleR87OtRhjcZ54jaJ0FkytAEvbLRAqLgYVrkX0"
+    "rapidApiKey": "PRABATH-MD~XRSm9EGYZTRMeCP"
 };
